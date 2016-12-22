@@ -35,21 +35,24 @@ class MyAppWindow(arcade.Window):
         self.bullet_list = arcade.SpriteList()
         
         
-
+        #BG Attribute
         self.bg = arcade.Sprite("images/bg.png")
         self.all_sprites_list.append(self.bg)
         self.bg.center_x = SCREEN_WIDTH/2
         self.bg.center_y = SCREEN_HEIGHT/2
-        
+
+        #Player Attribute
         self.score = 0
         self.health = 20
         self.player_sprite = arcade.Sprite("images/ship.png", SPRITE_SCALING/2)
         self.player_sprite.center_x = 50
         self.player_sprite.center_y = 70
         self.all_sprites_list.append(self.player_sprite)
-
+        
+        #Sound
         self.gun_sound = arcade.sound.load_sound("sounds/laser1.ogg")
-
+        self.hit_sound = arcade.sound.load_sound("sounds/phaseJump1.ogg")
+        
         for i in range(30):
 
             aster = Asteroid("images/asteroid.png", SPRITE_SCALING / random.randrange(1,4))
@@ -70,22 +73,45 @@ class MyAppWindow(arcade.Window):
 
         output = "SCORE: {}".format(self.score)
         arcade.draw_text(output, 10, 20, arcade.color.WHITE, 16)
+        
         output = "HEALTH: {}".format(self.health)
         arcade.draw_text(output, 10, 40, arcade.color.WHITE, 16)
 
     def on_mouse_motion(self, x, y, dx, dy):
         self.player_sprite.center_x = x
+        
 
     def on_mouse_press(self, x, y, button, modifiers):
-        arcade.sound.play_sound(self.gun_sound)        
+        arcade.sound.play_sound(self.gun_sound)
+        
         bullet = Bullet("images/laserBlue01.png", SPRITE_SCALING * 1.5)
         bullet.center_x = self.player_sprite.center_x
         bullet.bottom = self.player_sprite.top
+        
         self.all_sprites_list.append(bullet)
         self.bullet_list.append(bullet)
         
     def animate(self, delta_time):
         self.all_sprites_list.update()
+
+        for bullet in self.bullet_list:
+            
+            hit_list = arcade.check_for_collision_with_list(bullet,self.aster_list)
+            
+            if len(hit_list) > 0:
+                bullet.kill()
+
+            for aster in hit_list:
+                aster.update()
+                aster.reset_pos()
+                self.score += 1
+                arcade.sound.play_sound(self.hit_sound)
+
+            if bullet.bottom > SCREEN_HEIGHT:
+                bullet.kill()
+        
+
+        
  
  
 def main():
