@@ -32,6 +32,9 @@ class MyAppWindow(arcade.Window):
 
         output = "Score: {}".format(self.score)
         arcade.draw_text(output, 10, 20, arcade.color.WHITE, 14)
+
+    def on_mouse_motion(self, x, y, dx, dy):
+        self.player_sprite.center_x = x
  
  
 def main():
