@@ -52,6 +52,8 @@ class PolySpaceGame(arcade.Window):
         #Sound
         self.gun_sound = arcade.sound.load_sound("sounds/laser1.ogg")
         self.hit_sound = arcade.sound.load_sound("sounds/phaseJump2.wav")
+        self.bg_sound = arcade.sound.load_sound("sounds/ost.wav")
+        arcade.sound.play_sound(self.bg_sound)
         
         for i in range(30):
             aster = Asteroid("images/enemy.png", SPRITE_SCALING / random.randrange(3,7))
