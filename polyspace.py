@@ -16,18 +16,19 @@ class Asteroid(arcade.Sprite):
 
     def update(self):
 
-        self.center_y -= 1
+        self.center_y -= 1.5
         if self.top < 0:
             self.reset_pos()
             
 class Bullet(arcade.Sprite):
     def update(self):
         self.center_y += BULLET_SPEED
-        
+
 class PolySpaceGame(arcade.Window):
     
 
     def __init__(self):
+        
         super().__init__(SCREEN_WIDTH, SCREEN_HEIGHT)
 
         self.all_sprites_list = arcade.SpriteList()
@@ -42,7 +43,7 @@ class PolySpaceGame(arcade.Window):
 
         #Player Attribute
         PolySpaceGame.score = 0
-        self.health = 20
+        self.health = 100
         self.player_sprite = arcade.Sprite("images/ship.png", SPRITE_SCALING/3)
         self.player_sprite.center_x = 50
         self.player_sprite.center_y = 70
@@ -50,9 +51,9 @@ class PolySpaceGame(arcade.Window):
         
         #Sound
         self.gun_sound = arcade.sound.load_sound("sounds/laser1.ogg")
-        self.hit_sound = arcade.sound.load_sound("sounds/phaseJump1.ogg")
+        self.hit_sound = arcade.sound.load_sound("sounds/phaseJump2.wav")
         
-        for i in range(20):
+        for i in range(30):
             aster = Asteroid("images/enemy.png", SPRITE_SCALING / random.randrange(3,7))
             aster.center_x = random.randrange(SCREEN_WIDTH)
             aster.center_y = random.randrange(SCREEN_HEIGHT)
@@ -60,21 +61,21 @@ class PolySpaceGame(arcade.Window):
             self.aster_list.append(aster)
          
 
-
-
     def on_draw(self):
+        
         arcade.start_render()
         self.all_sprites_list.draw()
         output = "SCORE: {}".format(self.score)
-        arcade.draw_text(output, 10, 20, arcade.color.WHITE, 16)
+        arcade.draw_text(output, 10, 20, arcade.color.WHITE, 24)
         output = "HEALTH: {}".format(self.health)
-        arcade.draw_text(output, 10, 40, arcade.color.WHITE, 16)
+        arcade.draw_text(output, 10, 60, arcade.color.WHITE, 24)
 
     def on_mouse_motion(self, x, y, dx, dy):
-        self.player_sprite.center_x = x
         
+        self.player_sprite.center_x = x
 
     def on_mouse_press(self, x, y, button, modifiers):
+        
         arcade.sound.play_sound(self.gun_sound)
         PolySpaceGame.score -= 1
         bullet = Bullet("images/laserBlue01.png", SPRITE_SCALING * 1.5)
@@ -84,6 +85,7 @@ class PolySpaceGame(arcade.Window):
         self.bullet_list.append(bullet)
         
     def animate(self, delta_time):
+        
         self.all_sprites_list.update()
         hit_list2 = arcade.check_for_collision_with_list(self.player_sprite,self.aster_list)
         
@@ -100,16 +102,12 @@ class PolySpaceGame(arcade.Window):
             for aster in hit_list:
                 aster.update()
                 aster.reset_pos()
-                PolySpaceGame.score += 2
+                PolySpaceGame.score += 3
                 arcade.sound.play_sound(self.hit_sound)
 
             if bullet.bottom > SCREEN_HEIGHT:
                 bullet.kill()
         
-
-        
- 
- 
 def main():
     PolySpaceGame()
     arcade.run()
