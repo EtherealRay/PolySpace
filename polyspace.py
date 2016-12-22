@@ -6,6 +6,19 @@ SCREEN_WIDTH = 800
 SCREEN_HEIGHT = 600
 BULLET_SPEED = 5
 
+class Asteroid(arcade.Sprite):
+
+    def reset_pos(self):
+
+        self.center_y = random.randrange(SCREEN_HEIGHT + 20,SCREEN_HEIGHT + 100)
+        self.center_x = random.randrange(SCREEN_WIDTH)
+
+    def update(self):
+
+        self.center_y -= 1
+        if self.top < 0:
+            self.reset_pos()
+            
 class Bullet(arcade.Sprite):
     def update(self):
         self.center_y += BULLET_SPEED
@@ -18,7 +31,13 @@ class MyAppWindow(arcade.Window):
         self.all_sprites_list = arcade.SpriteList()
         self.bullet_list = arcade.SpriteList()
         
+        
         self.score = 0
+        self.bg = arcade.Sprite("images/bg.png")
+        self.all_sprites_list.append(self.bg)
+        self.bg.center_x = SCREEN_WIDTH/2
+        self.bg.center_y = SCREEN_HEIGHT/2
+        
         self.player_sprite = arcade.Sprite("images/ship.png", SPRITE_SCALING/2)
         self.player_sprite.center_x = 50
         self.player_sprite.center_y = 70
@@ -27,7 +46,6 @@ class MyAppWindow(arcade.Window):
         self.gun_sound = arcade.sound.load_sound("sounds/laser1.ogg")
 
 
-        arcade.set_background_color(arcade.color.BLACK)
 
     def on_draw(self):
         arcade.start_render()
