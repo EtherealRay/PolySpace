@@ -6,14 +6,18 @@ SCREEN_WIDTH = 800
 SCREEN_HEIGHT = 600
 BULLET_SPEED = 5
 
+class Bullet(arcade.Sprite):
+    def update(self):
+        self.center_y += BULLET_SPEED
+        
 class MyAppWindow(arcade.Window):
-    """ Main application class. """
 
     def __init__(self):
         super().__init__(SCREEN_WIDTH, SCREEN_HEIGHT)
 
         self.all_sprites_list = arcade.SpriteList()
-
+        self.bullet_list = arcade.SpriteList()
+        
         self.score = 0
         self.player_sprite = arcade.Sprite("images/ship.png", SPRITE_SCALING/2)
         self.player_sprite.center_x = 50
@@ -35,6 +39,14 @@ class MyAppWindow(arcade.Window):
 
     def on_mouse_motion(self, x, y, dx, dy):
         self.player_sprite.center_x = x
+
+    def on_mouse_press(self, x, y, button, modifiers):
+        bullet = Bullet("images/laserBlue01.png", SPRITE_SCALING * 1.5)
+        bullet.center_x = self.player_sprite.center_x
+        bullet.bottom = self.player_sprite.top
+        self.all_sprites_list.append(bullet)
+        self.bullet_list.append(bullet)
+
  
  
 def main():
