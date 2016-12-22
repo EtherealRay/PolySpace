@@ -46,7 +46,9 @@ class MyAppWindow(arcade.Window):
         bullet.bottom = self.player_sprite.top
         self.all_sprites_list.append(bullet)
         self.bullet_list.append(bullet)
-
+        
+    def animate(self, delta_time):
+        self.all_sprites_list.update()
  
  
 def main():
