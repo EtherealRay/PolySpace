@@ -29,6 +29,7 @@ class MyAppWindow(arcade.Window):
         super().__init__(SCREEN_WIDTH, SCREEN_HEIGHT)
 
         self.all_sprites_list = arcade.SpriteList()
+        self.aster_list = arcade.SpriteList()
         self.bullet_list = arcade.SpriteList()
         
         
@@ -44,6 +45,17 @@ class MyAppWindow(arcade.Window):
         self.all_sprites_list.append(self.player_sprite)
 
         self.gun_sound = arcade.sound.load_sound("sounds/laser1.ogg")
+
+        for i in range(30):
+
+            aster = Asteroid("images/asteroid.png", SPRITE_SCALING / random.randrange(1,4))
+
+            aster.center_x = random.randrange(SCREEN_WIDTH)
+            aster.center_y = random.randrange(SCREEN_HEIGHT)
+
+            self.all_sprites_list.append(aster)
+            self.aster_list.append(aster)
+        
 
 
 
