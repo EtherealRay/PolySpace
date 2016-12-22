@@ -24,7 +24,7 @@ class MyAppWindow(arcade.Window):
         self.player_sprite.center_y = 70
         self.all_sprites_list.append(self.player_sprite)
 
-
+        self.gun_sound = arcade.sound.load_sound("sounds/laser1.ogg")
 
 
         arcade.set_background_color(arcade.color.BLACK)
@@ -41,6 +41,7 @@ class MyAppWindow(arcade.Window):
         self.player_sprite.center_x = x
 
     def on_mouse_press(self, x, y, button, modifiers):
+        arcade.sound.play_sound(self.gun_sound)        
         bullet = Bullet("images/laserBlue01.png", SPRITE_SCALING * 1.5)
         bullet.center_x = self.player_sprite.center_x
         bullet.bottom = self.player_sprite.top
