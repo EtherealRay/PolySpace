@@ -22,6 +22,8 @@ class Asteroid(arcade.Sprite):
 class Bullet(arcade.Sprite):
     def update(self):
         self.center_y += BULLET_SPEED
+
+
         
 class MyAppWindow(arcade.Window):
 
@@ -33,12 +35,14 @@ class MyAppWindow(arcade.Window):
         self.bullet_list = arcade.SpriteList()
         
         
-        self.score = 0
+
         self.bg = arcade.Sprite("images/bg.png")
         self.all_sprites_list.append(self.bg)
         self.bg.center_x = SCREEN_WIDTH/2
         self.bg.center_y = SCREEN_HEIGHT/2
         
+        self.score = 0
+        self.health = 20
         self.player_sprite = arcade.Sprite("images/ship.png", SPRITE_SCALING/2)
         self.player_sprite.center_x = 50
         self.player_sprite.center_y = 70
@@ -64,8 +68,10 @@ class MyAppWindow(arcade.Window):
 
         self.all_sprites_list.draw()
 
-        output = "Score: {}".format(self.score)
-        arcade.draw_text(output, 10, 20, arcade.color.WHITE, 14)
+        output = "SCORE: {}".format(self.score)
+        arcade.draw_text(output, 10, 20, arcade.color.WHITE, 16)
+        output = "HEALTH: {}".format(self.health)
+        arcade.draw_text(output, 10, 40, arcade.color.WHITE, 16)
 
     def on_mouse_motion(self, x, y, dx, dy):
         self.player_sprite.center_x = x
